@@ -64,6 +64,30 @@ app.get('/', function (req, res) {
   res.status(200).send({'service_status': 'Up'})
 })
 
+app.get('/health-check', async (req, res) => {
+  try {
+    res.send("service up")
+  } catch (err) {
+    console.error('API Error:', err)
+    res.status(500).send({'msg': 'Internal server error'})
+  }
+})
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+app.get('/ready-check', async (req, res) => {
+  try {
+    await sleep(5000);
+    res.send("service ready")
+  } catch (err) {
+    console.error('API Error:', err)
+    res.status(500).send({'msg': 'Internal server error'})
+  }
+})
+
+
 console.log('server listening through port: ' + process.env.PORT)
 app.listen(process.env.PORT)
 module.exports = app
