@@ -88,6 +88,6 @@ app.get('/ready-check', async (req, res) => {
 })
 
 
-console.log('server listening through port: ' + process.env.PORT)
-app.listen(process.env.PORT)
+console.log('server listening through port: ' + 3000)
+app.listen(3000)
 module.exports = app
