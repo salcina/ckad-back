@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ckad-back
+  namespace: backend
+  labels:
+    app: ckad-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: ckad-backend
+  template:
+    metadata:
+      labels:
+        app: ckad-backend
+        name: ckad-backend
+    spec:
+      containers:
+        - name: ckad-backend
+          image: jalcina/ckad-back:latest
+          env:
+            - name: APP_PORT
+              value: "3000"
+            - name: DB_HOST
+              value: "db-movie-app.cmfd8deuhu77.us-east-1.rds.amazonaws.com"
+            - name: DB_USER
+              value: "Admin"
+            - name: DB_PASS
+              value: "password"
+            - name: DB_NAME
+              value: "movie_db"
+          ports:
+            - containerPort: 3000
