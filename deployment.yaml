@@ -46,7 +46,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: ckad-backend-service
+    app: ckad-backend
   ports:
     - port: 3000
       targetPort: 3000
