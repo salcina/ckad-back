@@ -6,11 +6,22 @@ async function main () {
     const pool = mysql.createPool({
       connectionLimit: 10,
       host: process.env.DB_HOST,
+      port:3306,
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
-      database: process.env.DB_NAME
+      database: process.env.DB_NAME,
     })
+
+    console.log(process.env.DB_HOST)
+    console.log(process.env.DB_USER)
+    console.log(process.env.DB_PASS)
+    console.log(process.env.DB_NAME)
+
     pool.query = util.promisify(pool.query)
+
+    const createPublicationsTable = 'CREATE TABLE `publications` (`name` VARCHAR(255),`avatar` VARCHAR(255));'
+
+    await pool.query(createPublicationsTable)
 
     const publicationsQuery = 'INSERT INTO publications (name, avatar) VALUES ?'
     const publicationsValues = [
@@ -24,6 +35,10 @@ async function main () {
     ]
     await pool.query(publicationsQuery, [publicationsValues])
 
+    const createReviewersTable = 'CREATE TABLE `reviewers` (`name` VARCHAR(255),`publication` VARCHAR(255),`avatar` VARCHAR(255));'
+
+    await pool.query(createReviewersTable)
+
     const reviewersQuery = 'INSERT INTO reviewers (name, publication, avatar) VALUES ?'
     const reviewersValues = [
       ['Robert Smith', 'The Daily Reviewer', 'https://s3.amazonaws.com/uifaces/faces/twitter/angelcolberg/128.jpg'],
@@ -35,6 +50,10 @@ async function main () {
       ['Anthony Miller', 'ComicBookHero.com', 'https://s3.amazonaws.com/uifaces/faces/twitter/9lessons/128.jpg']
     ]
     await pool.query(reviewersQuery, [reviewersValues])
+
+    const createMoviesTable = 'CREATE TABLE `movies` (`title` VARCHAR(255),`release_year` VARCHAR(255),`score` VARCHAR(255), `reviewer` VARCHAR(255),`publication` VARCHAR(255));'
+
+    await pool.query(createMoviesTable)
 
     const moviesQuery = 'INSERT INTO movies (title, release_year, score, reviewer, publication) VALUES ?'
     const moviesValues = [
